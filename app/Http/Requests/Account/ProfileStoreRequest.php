@@ -24,8 +24,8 @@ class ProfileStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'max:255', 'email', 'unique:users,email,' . auth()->id()]
+            'name'  => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'max:255', 'email', 'unique:users,email,'.auth()->id()],
         ];
     }
 }
