@@ -1,21 +1,23 @@
 <?php
 
-namespace App\Mail\Account;
+namespace App\Mail\Auth;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class PasswordUpdated extends Mailable implements ShouldQueue
+class ActivationEmail extends Mailable
 {
     use Queueable, SerializesModels;
+
+    public $token;
 
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($token)
     {
+        $this->token = $token;
     }
 
     /**
@@ -25,6 +27,6 @@ class PasswordUpdated extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->subject('Password updated')->markdown('emails.account.password.updated');
+        return $this->subject('Please active your account')->markdown('emails.auth.activation');
     }
 }
