@@ -19,8 +19,13 @@ $router->namespace('Account')
        });
 
 $router->namespace('Auth')
-       ->middleware('guest', 'confirmation_token.expired:/')
        ->prefix('activation')
        ->group(function ($router) {
-           $router->get('/{token}', 'ActivationController@activate')->name('activation.activate');
+           $router->get('/resend', 'ActivationResendController@index')
+                  ->name('activation.resend');
+           $router->post('/resend', 'ActivationResendController@store')
+                  ->name('activation.resend.store');
+           $router->get('/{token}', 'ActivationController@activate')
+                  ->name('activation.activate')
+                  ->middleware('guest', 'confirmation_token.expired:/');
        });
