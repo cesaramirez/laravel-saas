@@ -4,8 +4,8 @@
     @endcomponent
 @endif
 
-@if(session()->has('error'))
-    @component('layouts.partials.alerts._alerts_component', ['type' => 'error'])
-        {{ session('error') }}
+@if(session()->has('danger'))
+    @component('layouts.partials.alerts._alerts_component', ['type' => 'danger'])
+        {{ session('danger') }}
     @endcomponent
 @endif

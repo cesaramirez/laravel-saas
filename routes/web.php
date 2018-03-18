@@ -19,7 +19,8 @@ $router->namespace('Account')
        });
 
 $router->namespace('Auth')
-      ->prefix('activation')
-      ->group(function ($router) {
-          $router->get('/{token}', 'ActivationController@activate')->name('activation.activate');
-      });
+       ->middleware('guest', 'confirmation_token.expired:/')
+       ->prefix('activation')
+       ->group(function ($router) {
+           $router->get('/{token}', 'ActivationController@activate')->name('activation.activate');
+       });

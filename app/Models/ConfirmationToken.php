@@ -61,4 +61,9 @@ class ConfirmationToken extends Model
             optional($token->user->confirmationToken)->delete();
         });
     }
+
+    public function hasExpired()
+    {
+        return $this->freshTimestamp()->gt($this->expires_at);
+    }
 }
