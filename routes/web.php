@@ -3,7 +3,7 @@
 Auth::routes();
 
 $router->get('/', 'HomeController@index')->name('home');
-$router->get('/dashboard', 'DashboardController@index')->name('dashboard');
+$router->get('/dashboard', 'DashboardController@index')->name('dashboard')->middleware('auth');
 $router->namespace('Account')
        ->middleware('auth')
        ->prefix('account')
@@ -17,3 +17,9 @@ $router->namespace('Account')
            $router->get('/password', 'PasswordController@index')->name('password.index');
            $router->post('/password', 'PasswordController@store')->name('password.store');
        });
+
+$router->namespace('Auth')
+      ->prefix('activation')
+      ->group(function ($router) {
+          $router->get('/{token}', 'ActivationController@activate')->name('activation.activate');
+      });

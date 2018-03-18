@@ -1,7 +1,7 @@
 @component('mail::message')
 Please activate your account
 
-@component('mail::button', ['url' => ''])
+@component('mail::button', ['url' => route('activation.activate', $token)])
 Activate
 @endcomponent
 
