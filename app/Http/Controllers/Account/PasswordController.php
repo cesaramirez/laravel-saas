@@ -31,6 +31,6 @@ class PasswordController extends Controller
 
         \Mail::to($request->user())->send(new PasswordUpdated());
 
-        return redirect('account');
+        return redirect('account')->with('success', 'Password updated.');
     }
 }
