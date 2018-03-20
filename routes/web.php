@@ -29,3 +29,11 @@ $router->namespace('Auth')
                   ->name('activation.activate')
                   ->middleware('guest', 'confirmation_token.expired:/');
        });
+
+$router->namespace('Subscription')
+       ->prefix('plans')
+       ->as('plans.')
+       ->group(function ($router) {
+           $router->get('/', 'PlansController@index')->name('index');
+           $router->get('/teams', 'PlanTeamsController@index')->name('teams.index');
+       });
