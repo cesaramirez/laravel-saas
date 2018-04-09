@@ -15,11 +15,14 @@
                         id="payment-form">
                         {{ csrf_field() }}
 
-                        <div class="form-group row{{ $errors->has('plan') ? ' has-error' : '' }}">
+                        <div class="form-group row">
                             <label for="plan" class="col-md-3 control-label">Plan</label>
 
                             <div class="col-md-9">
-                                <select name="plan" id="plan" class="form-control custom-select">
+                                <select
+                                    name="plan"
+                                    id="plan"
+                                    class="form-control custom-select{{ $errors->has('coupon') ? ' is-invalid' : '' }}">
                                     @foreach ($plans as $item)
                                         <option
                                             value="{{ $item->gateway_id }}"
@@ -30,21 +33,26 @@
                                 </select>
 
                                 @if ($errors->has('plan'))
-                                    <span class="help-block">
+                                    <span class="invalid-feedback">
                                         <strong>{{ $errors->first('plan') }}</strong>
                                     </span>
                                 @endif
                             </div>
                         </div>
 
-                        <div class="form-group row{{ $errors->has('coupon') ? ' has-error' : '' }}">
+                        <div class="form-group row">
                             <label for="coupon" class="col-md-3 control-label">Coupon code</label>
 
                             <div class="col-md-9">
-                                <input type="text" name="coupon" id="coupon" class="form-control" value="{{ old('coupon') }}">
+                                <input
+                                    type="text"
+                                    name="coupon"
+                                    id="coupon"
+                                    class="form-control{{ $errors->has('coupon') ? ' is-invalid' : '' }}"
+                                    value="{{ old('coupon') }}">
 
                                 @if ($errors->has('coupon'))
-                                    <span class="help-block">
+                                    <span class="invalid-feedback">
                                         <strong>{{ $errors->first('coupon') }}</strong>
                                     </span>
                                 @endif
