@@ -43,6 +43,6 @@ $router->namespace('Subscription')
        ->as('subscription.')
        ->middleware('auth.register')
        ->group(function ($router) {
-           $router->get('/{plan}', 'SubscriptionsController@index')->name('index');
+           $router->get('/{plan?}', 'SubscriptionsController@index')->name('index');
            $router->post('/', 'SubscriptionsController@store')->name('store');
        });

@@ -66,34 +66,34 @@
 @section('scripts')
     <script src="https://checkout.stripe.com/checkout.js"></script>
     <script>
-        let handler = StripeCheckout.configure({
-            key: '{{ config('services.stripe.key') }}',
-            locale: 'auto',
-            token: function (token) {
-                let form = $('#payment-form')
+        var handler = StripeCheckout.configure({
+        key: '{{ config('services.stripe.key') }}',
+        image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
+        locale: 'auto',
+        token: function(token) {
+            let form = document.getElementById('payment-form')
+            document.getElementById('pay').disabled = true
+            console.log(token.id)
+            let input = document.createElement('input')
+            input.setAttribute('type', 'hidden')
+            input.setAttribute('name', 'token')
+            input.setAttribute('value', token.id)
 
-                $('#pay').prop('disabled', true)
+            form.appendChild(input)
 
-                $('<input>').attr({
-                    type: 'hidden',
-                    name: 'token',
-                    value: token.id
-                }).appendTo(form)
+            form.submit()
+        }
+    });
 
-                form.submit();
-            }
-        })
-
-        $('#pay').click(function (e) {
+        document.getElementById('pay').addEventListener('click', function(e) {
             handler.open({
                 name: 'Codecourse Ltd.',
                 description: 'Membership',
                 currency: 'gbp',
                 key: '{{ config('services.stripe.key') }}',
                 email: '{{ auth()->user()->email }}'
-            })
-
+            });
             e.preventDefault();
-        })
+        });
     </script>
 @endsection
