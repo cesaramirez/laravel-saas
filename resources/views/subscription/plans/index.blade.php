@@ -1,4 +1,4 @@
-@extends('layouts.app') 
+@extends('layouts.app')
 
 @section('content')
 <div class="row flex justify-content-center">
@@ -6,7 +6,9 @@
         <ul class="list-group">
             @foreach($plans as $plan)
             <li class="list-group-item">
-                <a href="">{{ $plan->name }} (${{ $plan->price }})</a>
+                <a href="{{ route('subscription.index', $plan->slug) }}">
+                    {{ $plan->name }} (${{ $plan->price }})
+                </a>
             </li>
             @endforeach
             <li class="list-group-item">

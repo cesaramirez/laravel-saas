@@ -37,3 +37,12 @@ $router->namespace('Subscription')
            $router->get('/', 'PlansController@index')->name('index');
            $router->get('/teams', 'PlanTeamsController@index')->name('teams.index');
        });
+
+$router->namespace('Subscription')
+       ->prefix('subscription')
+       ->as('subscription.')
+       ->middleware('auth.register')
+       ->group(function ($router) {
+           $router->get('/{plan}', 'SubscriptionsController@index')->name('index');
+           $router->post('/', 'SubscriptionsController@store')->name('store');
+       });
