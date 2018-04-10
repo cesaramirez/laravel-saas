@@ -17,9 +17,11 @@
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ml-auto">
                 <!-- Authentication Links -->
-                <li>
-                    <a class="nav-link" href="{{ route('plans.index') }}">Plans</a>
-                </li>
+                @notsubscribed
+                    <li>
+                        <a class="nav-link" href="{{ route('plans.index') }}">Plans</a>
+                    </li>
+                @endnotsubscribed
                 @guest
                 <li>
                     <a class="nav-link" href="{{ route('login') }}">Login</a>

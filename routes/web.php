@@ -16,6 +16,20 @@ $router->namespace('Account')
 
            $router->get('/password', 'PasswordController@index')->name('password.index');
            $router->post('/password', 'PasswordController@store')->name('password.store');
+
+           $router->namespace('Subscription')
+                  ->as('subscription.')
+                  ->prefix('subscription')
+                  ->group(function ($router) {
+                      $router->get('/cancel', 'SubscriptionCancelController@index')
+                            ->name('cancel');
+                      $router->get('/resume', 'SubscriptionResumeController@index')
+                            ->name('resume');
+                      $router->get('/swap', 'SubscriptionSwapController@index')
+                            ->name('swap');
+                      $router->get('/card', 'SubscriptionCardController@index')
+                            ->name('card');
+                  });
        });
 
 $router->namespace('Auth')

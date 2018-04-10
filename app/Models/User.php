@@ -3,13 +3,17 @@
 namespace App\Models;
 
 use App\Models\Traits\HasConfirmationToken;
+use App\Models\Traits\HasSubscriptions;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Cashier\Billable;
 
 class User extends Authenticatable
 {
-    use Notifiable, HasConfirmationToken, Billable;
+    use Notifiable,
+        HasConfirmationToken,
+        Billable,
+        HasSubscriptions;
 
     /**
      * The attributes that are mass assignable.
