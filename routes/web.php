@@ -3,7 +3,7 @@
 Auth::routes();
 
 $router->get('/', 'HomeController@index')->name('home');
-$router->get('/dashboard', 'DashboardController@index')->name('dashboard')->middleware('auth');
+$router->get('/dashboard', 'DashboardController@index')->name('dashboard')->middleware(['auth', 'subscription.active']);
 $router->namespace('Account')
        ->middleware('auth')
        ->prefix('account')
@@ -21,14 +21,24 @@ $router->namespace('Account')
                   ->as('subscription.')
                   ->prefix('subscription')
                   ->group(function ($router) {
-                      $router->get('/cancel', 'SubscriptionCancelController@index')
+                      $router->middleware('subscription.notcancelled')->group(function ($router) {
+                          $router->get('/cancel', 'SubscriptionCancelController@index')
                             ->name('cancel');
-                      $router->get('/resume', 'SubscriptionResumeController@index')
-                            ->name('resume');
-                      $router->get('/swap', 'SubscriptionSwapController@index')
+                      });
+
+                      $router->middleware('subscription.cancelled')->group(function ($router) {
+                          $router->get('/resume', 'SubscriptionResumeController@index')
+                              ->name('resume');
+                      });
+
+                      $router->middleware('subscription.notcancelled')->group(function ($router) {
+                          $router->get('/swap', 'SubscriptionSwapController@index')
                             ->name('swap');
-                      $router->get('/card', 'SubscriptionCardController@index')
+                      });
+                      $router->middleware('subscription.customer')->group(function ($router) {
+                          $router->get('/card', 'SubscriptionCardController@index')
                             ->name('card');
+                      });
                   });
        });
 
@@ -47,6 +57,7 @@ $router->namespace('Auth')
 $router->namespace('Subscription')
        ->prefix('plans')
        ->as('plans.')
+       ->middleware('subscription.inactive')
        ->group(function ($router) {
            $router->get('/', 'PlansController@index')->name('index');
            $router->get('/teams', 'PlanTeamsController@index')->name('teams.index');
@@ -55,7 +66,7 @@ $router->namespace('Subscription')
 $router->namespace('Subscription')
        ->prefix('subscription')
        ->as('subscription.')
-       ->middleware('auth.register')
+       ->middleware(['auth.register', 'subscription.inactive'])
        ->group(function ($router) {
            $router->get('/{plan?}', 'SubscriptionsController@index')->name('index');
            $router->post('/', 'SubscriptionsController@store')->name('store');
