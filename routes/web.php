@@ -3,7 +3,10 @@
 Auth::routes();
 
 $router->get('/', 'HomeController@index')->name('home');
-$router->get('/dashboard', 'DashboardController@index')->name('dashboard')->middleware(['auth', 'subscription.active']);
+$router->get('/dashboard', 'DashboardController@index')
+      ->name('dashboard')
+      ->middleware(['auth', 'subscription.active']);
+
 $router->namespace('Account')
        ->middleware('auth')
        ->prefix('account')
@@ -21,24 +24,32 @@ $router->namespace('Account')
                   ->as('subscription.')
                   ->prefix('subscription')
                   ->group(function ($router) {
-                      $router->middleware('subscription.notcancelled')->group(function ($router) {
-                          $router->get('/cancel', 'SubscriptionCancelController@index')
-                            ->name('cancel');
-                      });
+                      $router->middleware('subscription.notcancelled')
+                             ->group(function ($router) {
+                                 $router->get('/cancel', 'SubscriptionCancelController@index')
+                                        ->name('cancel');
+                                 $router->post('/cancel', 'SubscriptionCancelController@store')
+                                        ->name('cancel.store');
+                             });
 
-                      $router->middleware('subscription.cancelled')->group(function ($router) {
-                          $router->get('/resume', 'SubscriptionResumeController@index')
-                              ->name('resume');
-                      });
+                      $router->middleware('subscription.cancelled')
+                             ->group(function ($router) {
+                                 $router->get('/resume', 'SubscriptionResumeController@index')
+                                        ->name('resume');
+                                 $router->post('/resume', 'SubscriptionResumeController@store')
+                                        ->name('resume.store');
+                             });
 
-                      $router->middleware('subscription.notcancelled')->group(function ($router) {
-                          $router->get('/swap', 'SubscriptionSwapController@index')
-                            ->name('swap');
-                      });
-                      $router->middleware('subscription.customer')->group(function ($router) {
-                          $router->get('/card', 'SubscriptionCardController@index')
-                            ->name('card');
-                      });
+                      $router->middleware('subscription.notcancelled')
+                             ->group(function ($router) {
+                                 $router->get('/swap', 'SubscriptionSwapController@index')
+                                        ->name('swap');
+                             });
+                      $router->middleware('subscription.customer')
+                             ->group(function ($router) {
+                                 $router->get('/card', 'SubscriptionCardController@index')
+                                        ->name('card');
+                             });
                   });
        });
 
