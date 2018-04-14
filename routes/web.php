@@ -52,6 +52,13 @@ $router->namespace('Account')
                                  $router->post('/card', 'SubscriptionCardController@store')
                                         ->name('card.store');
                              });
+                      $router->middleware('subscription.team')
+                             ->group(function ($router) {
+                                 $router->get('/team', 'SubscriptionTeamController@index')
+                                        ->name('team');
+                                 $router->patch('/team', 'SubscriptionTeamController@update')
+                                        ->name('team.update');
+                             });
                   });
        });
 

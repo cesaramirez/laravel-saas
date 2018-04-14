@@ -7,6 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 class Plan extends Model
 {
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'teams_enabled' => 'boolean',
+    ];
+
+    public function isForTeams()
+    {
+        return $this->teams_enabled === true;
+    }
+
+    /**
      * Scope a query to only active plans.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
