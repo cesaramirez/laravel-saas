@@ -49,6 +49,8 @@ $router->namespace('Account')
                              ->group(function ($router) {
                                  $router->get('/card', 'SubscriptionCardController@index')
                                         ->name('card');
+                                 $router->post('/card', 'SubscriptionCardController@store')
+                                        ->name('card.store');
                              });
                   });
        });
